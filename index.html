@@ -1,227 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lucky Draw Countdown</title>
-  <style>
-    /* Global styling */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucky Draw Countdown</title>
+<style>
+    /* Same styles as before */
     body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(to bottom, #1e3c72, #2a5298);
-      font-family: 'Arial', sans-serif;
-      color: #ffffff;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(to right, #4e54c8, #8f94fb);
+        font-family: 'Arial', sans-serif;
+        color: #ffffff;
     }
 
     h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
 
-    .controls, .digit-container, .countdown, .text-box {
-      margin: 15px;
-    }
-
-    /* Styling for the controls section */
     .controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        width: 80%;
+        max-width: 400px;
     }
 
     .controls label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 15px;
-      color: #f1f1f1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: 20px;
+        color: #f1f1f1;
     }
 
-    .controls input, .controls textarea, .controls button {
-      margin: 5px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: none;
-      outline: none;
+    .controls input,
+    .controls textarea {
+        width: 100%;
+        margin-top: 5px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        transition: all 0.3s ease;
     }
 
-    .controls textarea, .controls input {
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-    }
-
-    .controls textarea::placeholder, .controls input::placeholder {
-      color: #ccc;
+    .controls input:focus,
+    .controls textarea:focus {
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
     }
 
     .controls button {
-      background: linear-gradient(45deg, #4caf50, #388e3c);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
+        padding: 12px 20px;
+        margin-top: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: none;
+        background: linear-gradient(45deg, #43e97b, #38f9d7);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
     }
 
     .controls button:hover {
-      background: linear-gradient(45deg, #66bb6a, #43a047);
+        background: linear-gradient(45deg, #38f9d7, #43e97b);
+        transform: scale(1.05);
     }
 
-    /* Styling for the digit container */
     .digit-container {
-      width: 120px;
-      height: 120px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.2);
-      border: 4px solid #fff;
-      border-radius: 50%;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        margin-top: 30px;
+        font-size: 3rem;
+        font-weight: bold;
+        color: #ffeb3b;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
     }
 
-    .digit {
-      font-size: 50px;
-      font-weight: bold;
-      color: #ffeb3b;
-      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-    }
-
-    /* Countdown timer styling */
     .countdown {
-      font-size: 40px;
-      font-weight: bold;
-      color: #ffcc80;
-      text-align: center;
+        margin-top: 20px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #f5f5f5;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
 
-    /* Text area styling */
-    .text-box {
-      width: 300px;
-      height: 100px;
-      padding: 15px;
-      font-size: 16px;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      resize: none;
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
+    .hidden {
+        display: none;
     }
-
-    .text-box::placeholder {
-      color: #bbb;
-    }
-  </style>
+</style>
 </head>
 <body>
-  <!-- Header -->
-  <h1>Lucky Draw Countdown</h1>
+<h1 style="text-align: center;">Lucky Draw Countdown</h1>
+<div class="controls">
+    <div id="loginFields">
+        <label>
+            <b>Enter Admin Password to Edit:</b>
+            <input type="password" id="passwordInput" placeholder="Enter password" />
+            <button id="verifyButton">Login</button>
+        </label>
+    </div>
+    <div id="adminControls" class="hidden">
+        <label>
+            <b>Set Duration (H:M:S):</b>
+            <input type="text" id="duration" placeholder="e.g., 0:1:0 (1 minute)" value="0:01:00">
+        </label>
+        <label>
+            <b>Enter Numbers to Scroll (Comma-Separated):</b>
+            <textarea id="numberList" placeholder="0,1,2,3,4,5,6,7,8,9">0,1,2,3,4,5,6,7,8,9</textarea>
+        </label>
+        <label>
+            <b>Set Scrolling Speed (ms):</b>
+            <input type="number" id="speed" value="100" min="10">
+        </label>
+    </div>
+    <button id="startButton" class="hidden">Start Scrolling</button>
+</div>
+<div class="digit-container" id="digit">0</div>
+<div class="countdown" id="countdownTimer">0:00:00</div>
+<script>
+    const PASSWORD = "admin123";
 
-  <!-- Editable Controls -->
-  <div class="controls">
-    <label>
-      <b>Set Duration (H:M:S):</b>
-      <input type="text" id="duration" placeholder="e.g., 0:1:0 (1 minute)" value="0:01:00">
-    </label>
-    <label>
-      <b>Enter Numbers to Scroll (Comma-Separated):</b>
-      <textarea id="numberList">0,1,2,3,4,5,6,7,8,9</textarea>
-    </label>
-    <label>
-      <b>Set Scrolling Speed (ms):</b>
-      <input type="number" id="speed" value="100" min="10">
-    </label>
-    <button id="startButton">Start Scrolling</button>
-  </div>
+    const passwordInput = document.getElementById("passwordInput");
+    const verifyButton = document.getElementById("verifyButton");
+    const loginFields = document.getElementById("loginFields");
+    const adminControls = document.getElementById("adminControls");
+    const startButton = document.getElementById("startButton");
 
-  <!-- Digit Container -->
-  <div class="digit-container">
-    <div class="digit" id="digit">0</div>
-  </div>
-
-  <!-- Countdown Timer -->
-  <div class="countdown" id="countdownTimer">0:00:00</div>
-
-  <!-- Text Box -->
-  <textarea class="text-box" id="customTextBox" placeholder="Write anything here..."></textarea>
-
-  <script>
-    // JavaScript logic remains the same
-    let intervalId = null;
-    let countdownInterval = null;
+    verifyButton.addEventListener("click", () => {
+        if (passwordInput.value === PASSWORD) {
+            adminControls.classList.remove("hidden");
+            startButton.classList.remove("hidden");
+            loginFields.classList.add("hidden");
+            alert("Admin access granted. You can now edit settings.");
+        } else {
+            adminControls.classList.add("hidden");
+            startButton.classList.add("hidden");
+            alert("You are in view-only mode.");
+        }
+    });
 
     function convertToMilliseconds(duration) {
-      const [hours, minutes, seconds] = duration.split(":").map(Number);
-      return (hours * 3600 + minutes * 60 + seconds) * 1000;
+        const [hours, minutes, seconds] = duration.split(":").map(Number);
+        return (hours * 3600 + minutes * 60 + seconds) * 1000;
     }
 
     function formatMilliseconds(ms) {
-      const totalSeconds = Math.floor(ms / 1000);
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     }
 
+    let intervalId = null;
+    let countdownInterval = null;
+
     function startScrolling(containerId, speed, numbers, duration) {
-      const container = document.getElementById(containerId);
-      let index = 0;
-
-      intervalId = setInterval(() => {
-        index = (index + 1) % numbers.length;
-        container.textContent = numbers[index];
-      }, speed);
-
-      setTimeout(() => {
-        clearInterval(intervalId);
-        clearInterval(countdownInterval);
-      }, duration);
+        const container = document.getElementById(containerId);
+        let index = 0;
+        intervalId = setInterval(() => {
+            index = (index + 1) % numbers.length;
+            container.textContent = numbers[index];
+        }, speed);
+        setTimeout(() => {
+            clearInterval(intervalId);
+            clearInterval(countdownInterval);
+        }, duration);
     }
 
     function startCountdown(duration) {
-      const countdownTimer = document.getElementById("countdownTimer");
-      let remainingTime = duration;
-
-      countdownInterval = setInterval(() => {
-        remainingTime -= 1000;
-        countdownTimer.textContent = formatMilliseconds(remainingTime);
-        if (remainingTime <= 0) {
-          clearInterval(countdownInterval);
-          countdownTimer.textContent = "0:00:00";
-        }
-      }, 1000);
+        const countdownTimer = document.getElementById("countdownTimer");
+        let remainingTime = duration;
+        countdownInterval = setInterval(() => {
+            remainingTime -= 1000;
+            countdownTimer.textContent = formatMilliseconds(remainingTime);
+            if (remainingTime <= 0) {
+                clearInterval(countdownInterval);
+                countdownTimer.textContent = "0:00:00";
+            }
+        }, 1000);
     }
 
-    document.getElementById("startButton").addEventListener("click", () => {
-      if (intervalId) clearInterval(intervalId);
-      if (countdownInterval) clearInterval(countdownInterval);
-
-      const durationInput = document.getElementById("duration").value;
-      const duration = convertToMilliseconds(durationInput);
-      const speed = parseInt(document.getElementById("speed").value);
-      const numbers = document.getElementById("numberList").value.split(",").map(Number);
-
-      if (isNaN(duration) || duration <= 0) {
-        alert("Please enter a valid duration in H:M:S format.");
-        return;
-      }
-
-      startScrolling("digit", speed, numbers, duration);
-      startCountdown(duration);
+    startButton.addEventListener("click", () => {
+        if (intervalId) clearInterval(intervalId);
+        if (countdownInterval) clearInterval(countdownInterval);
+        const durationInput = document.getElementById("duration").value;
+        const duration = convertToMilliseconds(durationInput);
+        const speed = parseInt(document.getElementById("speed").value);
+        const numbers = document.getElementById("numberList").value.split(",").map(Number);
+        if (isNaN(duration) || duration <= 0) {
+            alert("Please enter a valid duration in H:M:S format.");
+            return;
+        }
+        startScrolling("digit", speed, numbers, duration);
+        startCountdown(duration);
     });
-  </script>
+</script>
 </body>
 </html>
